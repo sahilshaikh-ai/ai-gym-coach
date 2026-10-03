@@ -1,0 +1,7 @@
+[server]
+fileWatcherType = "poll"
+runOnSave = true
+
+
+[runner]
+fastReruns = true
