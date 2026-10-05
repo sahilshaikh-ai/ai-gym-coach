@@ -4,12 +4,16 @@ from services.auth.login_wall import *
 from services.state.session_defaults import *
 from services.config.workout_config import *
 from services.ui.style_loader import *
+from services.persistence.exercise_repository import init_db
+from services.persistence.exercise_repository import get_user_exercises
 def main():
 
     st.set_page_config(page_icon="🏋️", page_title="AI Real-time GYM coach", initial_sidebar_state="expanded", layout="centered")
 
     load_css(os.path.join(os.getcwd(), "static", "style.css"))
     inject_local_font(os.path.join(os.getcwd(), "static", "AdobeClean.otf"), "AdobeClean")
+
+    init_db()
 
     if not render_login_wall():
         return
