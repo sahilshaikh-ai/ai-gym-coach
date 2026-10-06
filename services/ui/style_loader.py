@@ -67,7 +67,7 @@ def inject_webrtc_styles():
                             font-family: 'AdobeClean', sans-serif !important;
                             letter-spacing: 0.05em !important;
                         }}
-                    `;
+                    
                     doc.head.appendChild(style);
                 }} catch (e) {{
                     console.warn('[patcher] could not inject:', e);
