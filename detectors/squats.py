@@ -66,6 +66,8 @@ class SquatDetector(BaseExercise):
                 self.stage = "up" 
                 self.reps += 1
 
+        depth_status = "UNKNOWN"        
+
         if self.stage == "down":
             depth_status = "GOOD DEPTH" if knee_angle <= self.DOWN_THRESHOLD else "TOO HIGH"
 

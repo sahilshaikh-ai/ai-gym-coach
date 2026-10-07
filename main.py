@@ -7,6 +7,7 @@ from services.config.workout_config import *
 from services.ui.style_loader import *
 from services.persistence.exercise_repository import init_db
 from services.persistence.exercise_repository import get_user_exercises
+from services.vision.exercise_video_process import VideoProcessorClass
 def main():
 
     st.set_page_config(page_icon="🏋️", page_title="AI Real-time GYM coach", initial_sidebar_state="expanded", layout="centered")
@@ -139,15 +140,15 @@ def main():
         context = webrtc_streamer(
             key="exercise-analysis",
             mode=WebRtcMode.SENDRECV,
-            video_processor_factory=None,
+            video_processor_factory=VideoProcessorClass,
             rtc_configuration={"iceServers": [{"urls": ["stun:stun.l.google.com:19302"]}]},
             media_stream_constraints={"video": True, "audio": False},
             async_processing=True
         )
 
-    st.markdown("#### Workout History")
+        inject_webrtc_styles()
 
-    inject_webrtc_styles()
+    st.markdown("#### Workout History")
 
             
             
