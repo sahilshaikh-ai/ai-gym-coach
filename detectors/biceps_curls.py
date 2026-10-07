@@ -1,5 +1,5 @@
 import math
-from core.base_exercise import *
+from core.base_exercise import BaseExercise
 
 
 class BicepsCurlDetector(BaseExercise):
