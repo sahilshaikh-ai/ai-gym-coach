@@ -25,7 +25,7 @@ class VideoProcessorClass(VideoProcessorBase):
         base_option = python.BaseOptions(model_asset_path=model_path)
 
         options = vision.PoseLandmarkerOptions(
-            base_options=base_option,
+            base_options=base_option, 
             running_mode=vision.RunningMode.VIDEO,
             min_pose_detection_confidence=0.7,
             min_pose_presence_confidence=0.7,

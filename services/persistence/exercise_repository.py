@@ -3,6 +3,7 @@ import streamlit as st
 from pathlib import Path 
 
 
+
 #__ for like assuming its a private variable its accessible in this class only 
 _DB_PATH = str(Path(__file__).parent.parent.parent / "data.db")   
 
