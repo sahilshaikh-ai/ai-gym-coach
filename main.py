@@ -1,8 +1,11 @@
 import streamlit as st 
 import os
+from pathlib import Path
+from dotenv import load_dotenv
 import time
 import pandas as pd 
 from groq import Groq
+
 from streamlit_webrtc import webrtc_streamer, WebRtcMode
 from services.auth.login_wall import *
 from services.state.session_defaults import *
@@ -14,9 +17,10 @@ from services.vision.exercise_video_process import VideoProcessorClass
 from services.persistence.exercise_repository import get_user_exercises
 from services.coaching.llm import LLMCoach
 from services.coaching.voice_pipeline import VoicePipeline, autoplay_audio
-from services.coaching.tts import tts
+from services.coaching.tts import TextToSpeech
 
 def main():
+   
 
     st.set_page_config(page_icon="🏋️", page_title="AI Real-time GYM coach", initial_sidebar_state="expanded", layout="centered")
 
@@ -32,17 +36,39 @@ def main():
 
     if "voice_pipeline" not in st.session_state:
         try:
-            api_key = os.environ.get("GROQ_API_KEY","")
+            project_dir = Path(__file__).resolve().parent
 
-            if not api_key and hasattr(st, "secrets") and "GROQ_API_KEY" in st.secrets:
-                api_key = st.secrets["GROQ_API_KEY"]
+            load_dotenv(project_dir / ".env", override=False)
 
-            groq_clients = Groq(api_key=api_key)
-            llm_coach = LLMCoach(groq_clients)
+            api_key = os.environ.get("GROQ_API_KEY", "").strip()
+
+            if not api_key:
+                try:
+                    api_key = st.secrets.get("GROQ_API_KEY", "")
+                except Exception:
+                    api_key = ""
+
+            api_key = api_key.strip() if api_key else ""
+
+            if not api_key:
+                raise ValueError(
+                    "GROQ_API_KEY is missing. Check your .env file "
+                    "or Streamlit Cloud secrets."
+                )
+            
+            groq_client = Groq(api_key=api_key)
+            llm_coach = LLMCoach(groq_client)
+            tts = TextToSpeech()
             st.session_state.voice_pipeline = VoicePipeline(llm_coach, tts)
+            print("Voice pipeline initialized successfully.")
 
         except Exception as e:
             st.session_state.voice_pipeline = None
+
+            st.error(
+                f"Voice initialization failed: "
+                f"{type(e).__name__}: {e}"
+            )
 
     workout_started = st.session_state.get("workout_started", False)
 
@@ -169,7 +195,7 @@ def main():
 
     if st.session_state.get("coach_feedback"):
         st.markdown("")
-        st.success(f"🤖 **coach:** {st.session_state.coach_feedback}")
+        st.success(f"🤖 **Coach:** {st.session_state.coach_feedback}")
 
     if not workout_started:
         st.markdown(

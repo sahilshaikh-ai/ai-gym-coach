@@ -38,7 +38,7 @@ class VideoProcessorClass(VideoProcessorBase):
         self._detectors = {
             "Squats": SquatDetector(),
             "Push-ups": PushUpDetector(),
-            "Biceps Curls (dumbbells)": BicepsCurlDetector(),
+            "Biceps Curls (Dumbbell)": BicepsCurlDetector(),
             "Shoulder Press": ShoulderPressDetector(),
             "Lunges": LungesDetector(),
         }
@@ -115,7 +115,7 @@ class VideoProcessorClass(VideoProcessorBase):
             self._draw_squats_overlays(img, metrics)
         elif ex_type == "Push-ups":
             self._draw_pushup_overlays(img, metrics)
-        elif ex_type == "Biceps Curls (dumbbells)":
+        elif ex_type == "Biceps Curls (Dumbbell)":
             self._draw_curl_overlays(img, metrics)
         elif ex_type == "Shoulder Press":
             self._draw_press_overlays(img, metrics)
